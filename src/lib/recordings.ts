@@ -369,6 +369,7 @@ export async function finalizeRecordingForActor(input: {
   titulo: string | null;
   observacoes: string | null;
   duracaoSeg: number | null;
+  sizeBytes: number | null;
 }): Promise<{ id: string }> {
   const wsName = await getWorkspaceName(input.actor.workspaceId);
   const { ok, folderId } = await verifyDriveFileInUserFolder({
@@ -386,6 +387,7 @@ export async function finalizeRecordingForActor(input: {
       titulo: input.titulo,
       observacoes: input.observacoes,
       duracao_seg: input.duracaoSeg,
+      size_bytes: input.sizeBytes,
       drive_file_id: input.fileId,
       drive_folder_id: folderId,
     })

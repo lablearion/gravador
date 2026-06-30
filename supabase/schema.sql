@@ -74,6 +74,7 @@ create table recordings (
   titulo          text,                 -- rótulo do autor (≠ assunto da IA)
   observacoes     text,
   duracao_seg     integer,
+  size_bytes      bigint,               -- tamanho do áudio em bytes (blob.size no finalize); nulo p/ gravações antigas — back-p roteia transcrição por tamanho
   mode            text not null default 'free' check (mode in ('free')),
   area_id         uuid references areas(id) on delete set null,
   resumo          text,                 -- frase que resume (gerada pelo back-p); nulo até processar

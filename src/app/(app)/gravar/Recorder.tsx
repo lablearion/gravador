@@ -342,6 +342,7 @@ export default function Recorder() {
       titulo: titulo || null,
       observacoes: obs || null,
       duracao: dur || null,
+      sizeBytes: blob.size || null,
     });
   }
 

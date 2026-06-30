@@ -48,6 +48,7 @@ export async function finalizeRecordingAction(input: {
   titulo: string | null;
   observacoes: string | null;
   duracao: number | null;
+  sizeBytes: number | null;
 }): Promise<{ id: string }> {
   const actor = await getActor();
   if (actor.status === "unavailable") throw new Error(UNAVAILABLE);
@@ -66,6 +67,7 @@ export async function finalizeRecordingAction(input: {
     titulo: (input.titulo || "").trim() || null,
     observacoes: (input.observacoes || "").trim() || null,
     duracaoSeg: input.duracao || null,
+    sizeBytes: input.sizeBytes ?? null,
   });
   // Read-your-own-writes: expira já a lista cacheada do workspace → a nova gravação aparece na
   // próxima visita sem servir conteúdo velho (updateTag, só em Server Action). DEC-018/DEV-030.
