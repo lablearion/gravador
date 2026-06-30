@@ -100,7 +100,12 @@ function fetchWorkspaceRecordingsRaw(workspaceId: string): Promise<Recording[]> 
       return ((data ?? []) as unknown as Row[]).map(mapRow);
     },
     ["ws-recordings-raw", workspaceId],
-    { tags: [recordingsTag(workspaceId)] }
+    // TTL curto (~20s, abaixo do poll de 30s do AutoRefresh): a leitura cacheada expira entre polls,
+    // então o `router.refresh()` passa a refletir escritas EXTERNAS (back-p, fora do Next → não chama
+    // `updateTag`) SOZINHO, sem acoplamento back-p↔front (back-p Tópico G / APR-013). A(s) tag(s) e o
+    // `updateTag` das mutações do front CONTINUAM dando read-your-own-writes instantâneo; o TTL cobre
+    // só as escritas externas, com tolerância de ~1 ciclo (stale-while-revalidate, aceitável aqui). DEC-018.
+    { tags: [recordingsTag(workspaceId)], revalidate: 20 }
   )();
 }
 
